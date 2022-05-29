@@ -192,7 +192,7 @@ def main(args):
             b_labs = batch[3].to(device)
             b_labs_complexity = batch[4].to(device)
             model.zero_grad()
-            logits_qa, logits_complexity = model(input_ids=b_input_ids, attention_mask=b_att_msks, token_type_ids=b_tok_typ_ids, labels=b_labs)
+            logits_qa, logits_complexity = model(input_ids=b_input_ids, attention_mask=b_att_msks, token_type_ids=b_tok_typ_ids)
             loss_qa = criterion_qa(logits_qa, b_labs)
             loss_complexity = criterion_complexity(logits_complexity, b_labs_complexity)
             loss = loss_qa + loss_complexity
