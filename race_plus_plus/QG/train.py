@@ -65,7 +65,9 @@ def main(args):
         middle_data = json.load(f)
     with open(args.train_data_path + "high.json") as f:
         high_data = json.load(f)
-    train_data = middle_data + high_data
+    with open(args.train_data_path + "college.json") as f:
+        college_data = json.load(f)
+    train_data = middle_data + high_data + college_data
 
     tokenizer = T5Tokenizer.from_pretrained("t5-base")
 
