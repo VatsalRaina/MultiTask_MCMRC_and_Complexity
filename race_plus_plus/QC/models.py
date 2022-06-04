@@ -122,6 +122,7 @@ class ElectraMulti(torch.nn.Module):
         logits_complexity = self.classifier_complexity(pooled_output)
         print(logits_complexity.size())
         logits_complexity = logits_complexity.view(-1, num_choices, 3)
+        logits_complexity = torch.mean(logits_complexity, -2)
         print(logits_complexity.size())
         print("Next")
 
