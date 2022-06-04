@@ -79,32 +79,28 @@ def main(args):
     electra_large = "google/electra-large-discriminator"
     tokenizer = ElectraTokenizer.from_pretrained(electra_large, do_lower_case=True)
 
-    # num_middle = 0
-    # for item in middle_data:
-    #     num_middle += len(item["questions"])
-    # num_high = 0
-    # for item in high_data:
-    #     num_high += len(item["questions"])
+    num_middle = 0
+    for item in middle_data:
+        num_middle += len(item["questions"])
+    num_high = 0
+    for item in high_data:
+        num_high += len(item["questions"])
     num_college = 0
     for item in college_data:
         num_college += len(item["questions"])
 
-    # labels = [0]*num_middle + [1]*num_high + [2]*num_college
+    labels = [0]*num_middle + [1]*num_high + [2]*num_college
     labels = []
     input_ids = []
     token_type_ids = []
     count = 0
 
     for item in train_data:
-        count += 1
-        if count==2:
-            break
         context = item["article"]
         questions = item["questions"]
         answers = item["answers"]
         options = item["options"]
         for qu_num in range(len(questions)):
-            labels.append(0)
             four_inp_ids = []
             four_tok_type_ids = []
             question = questions[qu_num]
