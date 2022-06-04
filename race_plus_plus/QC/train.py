@@ -95,6 +95,9 @@ def main(args):
     count = 0
 
     for item in train_data:
+        count += 1
+        if count==2:
+            break
         context = item["article"]
         questions = item["questions"]
         answers = item["answers"]
