@@ -103,7 +103,7 @@ class ElectraMulti(torch.nn.Module):
         self.electra = ElectraModel.from_pretrained(electra_large)
         self.sequence_summary = SequenceSummary(self.electra.config)
         self.classifier_qa = torch.nn.Linear(self.electra.config.hidden_size, 1)
-        self.classifier_complexity = torch.nn.Linear(self.electra.config.hidden_size, 1)
+        self.classifier_complexity = torch.nn.Linear(self.electra.config.hidden_size, 3)
 
 
     def forward(self, input_ids, attention_mask, token_type_ids):
@@ -124,6 +124,7 @@ class ElectraMulti(torch.nn.Module):
         logits_qa = logits_qa.view(-1, num_choices)
 
         logits_complexity = self.classifier_complexity(pooled_output)
-        logits_complexity = logits_complexity.view(-1, num_choices)
+        logits_complexity = logits_complexity.view(-1, num_choices, 3)
+        logits_complexity = torch.mean(logits_complexity, -2)
 
         return logits_qa, logits_complexity
