@@ -90,7 +90,6 @@ def main(args):
         num_college += len(item["questions"])
 
     labels = [0]*num_middle + [1]*num_high + [2]*num_college
-    labels = []
     input_ids = []
     token_type_ids = []
     count = 0
