@@ -142,7 +142,7 @@ def main(args):
     # Convert to torch tensors
     labels = torch.tensor(labels)
     labels = labels.long().to(device)
-    labels_complexity = torch.tensor(labels)
+    labels_complexity = torch.tensor(labels_complexity)
     labels_complexity = labels_complexity.long().to(device)
     input_ids = torch.tensor(input_ids)
     input_ids = input_ids.long().to(device)
