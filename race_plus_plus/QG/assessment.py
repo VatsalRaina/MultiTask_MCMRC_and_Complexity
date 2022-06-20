@@ -250,7 +250,7 @@ def main(args):
 
     device = get_default_device()
     models = []
-    seeds = [1, 2, 3, 4, 5, 6, 17, 8, 9, 10]
+    seeds = [1, 2, 3]
     for seed in seeds:
         model_path = args.models_dir + str(seed) + '/electra_QA_MC_seed' + str(seed) + '.pt'
         model = torch.load(model_path, map_location=device)
@@ -266,7 +266,7 @@ def main(args):
     print("Fraction accuracy:", frac_acc)
 
     complexity_models = []
-    seeds = [1, 2, 3, 4, 5]
+    seeds = [1, 2, 3]
     for seed in seeds:
         model_path = args.models_complexity_dir + str(seed) + '/electra_complexity_seed' + str(seed) + '.pt'
         model = torch.load(model_path, map_location=device)
