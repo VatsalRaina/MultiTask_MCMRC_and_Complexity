@@ -250,26 +250,26 @@ def main(args):
 
     organised_data = organise_data(all_gen_questions, all_contexts)
 
-    frac_four_opts = got_four_opts(organised_data)
-    print("Fraction of samples with 4 unique options:", frac_four_opts)
+    # frac_four_opts = got_four_opts(organised_data)
+    # print("Fraction of samples with 4 unique options:", frac_four_opts)
 
 
     device = get_default_device()
-    models = []
-    seeds = [1, 2, 3]
-    for seed in seeds:
-        model_path = args.models_dir + str(seed) + '/electra_QA_MC_seed' + str(seed) + '.pt'
-        model = torch.load(model_path, map_location=device)
-        model.eval().to(device)
-        models.append(model)
+    # models = []
+    # seeds = [1, 2, 3]
+    # for seed in seeds:
+    #     model_path = args.models_dir + str(seed) + '/electra_QA_MC_seed' + str(seed) + '.pt'
+    #     model = torch.load(model_path, map_location=device)
+    #     model.eval().to(device)
+    #     models.append(model)
     
-    all_logits = get_qa_predictions(organised_data, models, device, args)
+    # all_logits = get_qa_predictions(organised_data, models, device, args)
 
-    frac_unans = get_unanswerability(all_logits)
-    print("Unanswerability score:", frac_unans)
+    # frac_unans = get_unanswerability(all_logits)
+    # print("Unanswerability score:", frac_unans)
 
-    frac_acc = get_accuracy(all_logits)
-    print("Fraction accuracy:", frac_acc)
+    # frac_acc = get_accuracy(all_logits)
+    # print("Fraction accuracy:", frac_acc)
 
     complexity_models = []
     seeds = [1, 2, 3]
