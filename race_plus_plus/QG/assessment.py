@@ -220,14 +220,14 @@ def get_complexity_predictions(test_data, models, device, args):
     return logits_all_models
 
 def get_complexity(all_logits):
-    ens_logits = np.mean(all_logits, axis=0)
-    class_preds = np.argmax(ens_logits, axis=-1)
-    class_counts = [0, 0, 0]
-    for pred in class_preds:
-        class_counts[pred] = class_counts[pred] + 1
-    class_counts = np.asarray(class_counts)
-    class_fracs = class_counts / np.sum(class_counts)
-    return class_fracs
+
+    ens_preds = np.mean( softmax(all_logits, axis=-1), axis=0 )
+    all_complexities = []
+    for curr_preds in ens_preds:
+        complexity = 0.0 * curr_preds[0] + 0.5 * curr_preds[1] + 1.0 * curr_preds[2]
+        all_complexities.append(complexity)
+    return np.mean( np.asarray(all_complexities), axis=0 )
+
 
 def main(args):
     if not os.path.isdir('CMDs'):
@@ -265,18 +265,18 @@ def main(args):
     frac_acc = get_accuracy(all_logits)
     print("Fraction accuracy:", frac_acc)
 
-    # complexity_models = []
-    # seeds = [1, 2, 3, 4, 5]
-    # for seed in seeds:
-    #     model_path = args.models_complexity_dir + str(seed) + '/electra_seed' + str(seed) + '.pt'
-    #     model = torch.load(model_path, map_location=device)
-    #     model.eval().to(device)
-    #     complexity_models.append(model)
+    complexity_models = []
+    seeds = [1, 2, 3, 4, 5]
+    for seed in seeds:
+        model_path = args.models_complexity_dir + str(seed) + '/electra_seed' + str(seed) + '.pt'
+        model = torch.load(model_path, map_location=device)
+        model.eval().to(device)
+        complexity_models.append(model)
 
-    # all_complexity_logits = get_complexity_predictions(organised_data, complexity_models, device, args)
+    all_complexity_logits = get_complexity_predictions(organised_data, complexity_models, device, args)
 
-    # complexity = get_complexity(all_complexity_logits)
-    # print("Complexities: easy-medium-hard:", complexity)
+    complexity = get_complexity(all_complexity_logits)
+    print("Complexity:", complexity)
 
 
 if __name__ == '__main__':
