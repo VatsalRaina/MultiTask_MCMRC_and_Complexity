@@ -181,22 +181,18 @@ def get_complexity_predictions(test_data, models, device, args):
     token_type_ids = []
     attention_masks = []
 
-    for item in test_data:
-        context = item["article"]
-        questions = item["questions"]
-        options = item["options"]
-        for qu_num, question in enumerate(questions):
-            opts = options[qu_num]
-            combo = question + " [SEP] " + context
-            for opt in opts:
-                combo = combo + " [SEP] " + opt
-            input_encodings_dict = tokenizer(combo, truncation=True, max_length=MAXLEN, padding="max_length")
-            inp_ids = input_encodings_dict['input_ids']
-            inp_att_msk = input_encodings_dict['attention_mask']
-            tok_type_ids = [0 if i<= inp_ids.index(102) else 1 for i in range(len(inp_ids))]
-            input_ids.append(inp_ids)
-            token_type_ids.append(tok_type_ids)
-            attention_masks.append(inp_att_msk)
+    for ex in test_data:
+        question, context, options = ex['question'], ex['context'], ex['options']
+        combo = question + " [SEP] " + context
+        for opt in options:
+            combo = combo + " [SEP] " + opt
+        input_encodings_dict = tokenizer(combo, truncation=True, max_length=MAXLEN, padding="max_length")
+        inp_ids = input_encodings_dict['input_ids']
+        inp_att_msk = input_encodings_dict['attention_mask']
+        tok_type_ids = [0 if i<= inp_ids.index(102) else 1 for i in range(len(inp_ids))]
+        input_ids.append(inp_ids)
+        token_type_ids.append(tok_type_ids)
+        attention_masks.append(inp_att_msk)
 
     input_ids = torch.tensor(input_ids)
     input_ids = input_ids.long().to(device)
